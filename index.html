@@ -55,6 +55,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: var(--space-6);
     }
 
     .logo {
@@ -99,9 +100,6 @@
       border: none;
     }
 
-    /* Comments section */
-    .comments-title svg { color: var(--color-primary); }
-
     footer {
       margin-top: var(--space-6);
       font-size: var(--text-sm);
@@ -133,7 +131,6 @@
     </button>
   </header>
 
-  <!-- OrgPad Embed -->
   <div class="card">
     <iframe
       src="https://orgpad.info/s/1T3-jnsUDa-?embed=true"
@@ -161,9 +158,6 @@
         root.setAttribute('data-theme', d);
         t.setAttribute('aria-label', 'Switch to ' + (d === 'dark' ? 'light' : 'dark') + ' mode');
         updateIcon();
-
-          );
-        }
       });
 
       function updateIcon() {
