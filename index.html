@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OrgPad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root, [data-theme="light"] {
+      --color-bg: #f7f6f2;
+      --color-surface: #f9f8f5;
+      --color-text: #28251d;
+      --color-text-muted: #7a7974;
+      --color-primary: #01696f;
+      --color-border: #d4d1ca;
+      --shadow-lg: 0 12px 32px oklch(0.2 0.01 80 / 0.12);
+      --radius-xl: 1rem;
+      --space-2: 0.5rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --giscus-theme: light;
+    }
+    [data-theme="dark"] {
+      --color-bg: #171614;
+      --color-surface: #1c1b19;
+      --color-text: #cdccca;
+      --color-text-muted: #797876;
+      --color-primary: #4f98a3;
+      --color-border: #393836;
+      --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.4);
+      --giscus-theme: dark;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      min-height: 100dvh;
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-base);
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--space-6) var(--space-4);
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-6);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-weight: 600;
+      font-size: var(--text-xl);
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+    .logo svg { width: 32px; height: 32px; }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--color-border);
+      border-radius: 9999px;
+      padding: 8px;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+    .theme-toggle:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+
+    .card {
+      width: 100%;
+      max-width: 900px;
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      margin-bottom: var(--space-6);
+    }
+
+    .card iframe {
+      display: block;
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+
+    /* Comments section */
+    .comments-section {
+      width: 100%;
+      max-width: 900px;
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--color-border);
+      padding: var(--space-6);
+    }
+
+    .comments-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .comments-title svg { color: var(--color-primary); }
+
+    /* Override giscus iframe background */
+    .giscus, .giscus-frame {
+      width: 100% !important;
+    }
+
+    footer {
+      margin-top: var(--space-6);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+    footer a { color: var(--color-primary); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .card iframe { height: 450px; }
+      .comments-section { padding: var(--space-4); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="logo" aria-label="OrgPad">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="12" height="12" rx="3" fill="currentColor" opacity="0.9"/>
+        <rect x="18" y="2" width="12" height="12" rx="3" fill="currentColor" opacity="0.5"/>
+        <rect x="2" y="18" width="12" height="12" rx="3" fill="currentColor" opacity="0.5"/>
+        <rect x="18" y="18" width="12" height="12" rx="3" fill="currentColor" opacity="0.25"/>
+      </svg>
+      OrgPad
+    </a>
+    <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- OrgPad Embed -->
+  <div class="card">
+    <iframe
+      src="https://orgpad.info/s/1T3-jnsUDa-?embed=true"
+      frameborder="0"
+      allowfullscreen
+      loading="lazy"
+      title="OrgPad presentation"
+    ></iframe>
+  </div>
+
+  <!-- Comments -->
+  <section class="comments-section" aria-label="Comments">
+    <div class="comments-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      Comments
+    </div>
+
+    <!-- =====================================================
+         GISCUS SETUP — replace the 3 values below:
+         1. data-repo="YOUR_GITHUB_USERNAME/YOUR_REPO_NAME"
+         2. data-repo-id="..."   ← get from https://giscus.app
+         3. data-category-id="..." ← get from https://giscus.app
+         ===================================================== -->
+    <script src="https://giscus.app/client.js"
+      data-repo="YOUR_GITHUB_USERNAME/YOUR_REPO_NAME"
+      data-repo-id="YOUR_REPO_ID"
+      data-category="General"
+      data-category-id="YOUR_CATEGORY_ID"
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="light"
+      data-lang="en"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async>
+    </script>
+  </section>
+
+  <footer>
+    Powered by <a href="https://orgpad.info" target="_blank" rel="noopener noreferrer">OrgPad</a>
+    &nbsp;&middot;&nbsp;
+    Comments via <a href="https://giscus.app" target="_blank" rel="noopener noreferrer">Giscus</a>
+  </footer>
+
+  <script>
+    (function () {
+      var t = document.querySelector('[data-theme-toggle]');
+      var root = document.documentElement;
+      var d = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', d);
+      updateIcon();
+
+      t && t.addEventListener('click', function () {
+        d = d === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', d);
+        t.setAttribute('aria-label', 'Switch to ' + (d === 'dark' ? 'light' : 'dark') + ' mode');
+        updateIcon();
+
+        // Sync Giscus theme dynamically
+        var giscusFrame = document.querySelector('iframe.giscus-frame');
+        if (giscusFrame) {
+          giscusFrame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme: d === 'dark' ? 'dark' : 'light' } } },
+            'https://giscus.app'
+          );
+        }
+      });
+
+      function updateIcon() {
+        if (!t) return;
+        t.innerHTML = d === 'dark'
+          ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+          : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      }
+    })();
+  </script>
+</body>
+</html>
